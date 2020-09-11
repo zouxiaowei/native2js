@@ -15,6 +15,7 @@
 		B545D2F52509C49900FE236F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B545D2F42509C49900FE236F /* main.m */; };
 		B545D2FC2509C57A00FE236F /* main.js in Resources */ = {isa = PBXBuildFile; fileRef = B545D2FB2509C57A00FE236F /* main.js */; };
 		B545D2FE2509C7EB00FE236F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B545D2FD2509C7EB00FE236F /* Assets.xcassets */; };
+		B545D302250B52D200FE236F /* Globle.m in Sources */ = {isa = PBXBuildFile; fileRef = B545D301250B52D200FE236F /* Globle.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,8 @@
 		B545D2F42509C49900FE236F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B545D2FB2509C57A00FE236F /* main.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = main.js; sourceTree = "<group>"; };
 		B545D2FD2509C7EB00FE236F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B545D300250B52D200FE236F /* Globle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Globle.h; sourceTree = "<group>"; };
+		B545D301250B52D200FE236F /* Globle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Globle.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +78,8 @@
 				B545D2F02509C49900FE236F /* LaunchScreen.storyboard */,
 				B545D2F32509C49900FE236F /* Info.plist */,
 				B545D2F42509C49900FE236F /* main.m */,
+				B545D300250B52D200FE236F /* Globle.h */,
+				B545D301250B52D200FE236F /* Globle.m */,
 			);
 			path = native2js;
 			sourceTree = "<group>";
@@ -152,6 +157,7 @@
 			files = (
 				B545D2EA2509C49800FE236F /* ViewController.m in Sources */,
 				B545D2E42509C49800FE236F /* AppDelegate.m in Sources */,
+				B545D302250B52D200FE236F /* Globle.m in Sources */,
 				B545D2F52509C49900FE236F /* main.m in Sources */,
 				B545D2E72509C49800FE236F /* SceneDelegate.m in Sources */,
 			);

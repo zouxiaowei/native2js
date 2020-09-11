@@ -8,10 +8,13 @@
 
 #import "ViewController.h"
 #import <JavaScriptCore/JavaScriptCore.h>
+#import "Globle.h"
+
 @interface ViewController ()
 
 @property(strong,nonatomic) JSContext *jsContext;
-
+@property(nonatomic,strong) NSMutableArray *actionArray;
+@property(nonatomic,strong) Globle *globle;
 @end
 
 @implementation ViewController
@@ -19,27 +22,44 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-
     self.jsContext = [[JSContext alloc]init];
-//    [self runJS_Hello:@"'avatar'"];
+    self.globle = [Globle new];
+    self.globle.ownerController = self;
+    self.jsContext[@"Globle"] = self.globle;
+    self.actionArray = [NSMutableArray array];
+    [self render];
     
-    int (^block)(NSString *) = ^(NSString *name){
-        NSLog(@"hello javascript");
-        NSLog(@"%@", name);
-        return 99;
-    };
-    [self.jsContext setObject:block forKeyedSubscript:@"oc_hello"];
-    NSLog(@"asdadasd");
 }
 
-//-(void) runJS_Hello:(NSString *)name{
-//    NSString *path =[[NSBundle mainBundle] pathForResource:@"main" ofType:@"js"];
-//    NSData *jsData =[[NSData alloc]initWithContentsOfFile:path];
-//    NSString *jsCode = [[NSString alloc]initWithData:jsData encoding:NSUTF8StringEncoding];
-//    NSString *fiString = [NSString stringWithFormat:jsCode,name];
-//    [self.jsContext evaluateScript:fiString];
-//}
+-(void) render{
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"main" ofType:@"js"];
+    NSData *jsData = [[NSData alloc]initWithContentsOfFile:path];
+    NSString *jsCode = [[NSString alloc]initWithData:jsData encoding:NSUTF8StringEncoding];
+    JSValue *jsValue = [self.jsContext evaluateScript:jsCode];
+    for(int i = 0;i<jsValue.toArray.count;i++){
+        JSValue *subValue = [jsValue objectAtIndexedSubscript:i];
+ 
+        if([[subValue objectForKeyedSubscript:@"typeName"].toString isEqualToString:@"Label"]){
+            UILabel *label = [UILabel new];
+            label.frame = CGRectMake(subValue[@"rect"][@"x"].toDouble, subValue[@"rect"][@"y"].toDouble, subValue[@"rect"][@"width"].toDouble, subValue[@"rect"][@"height"].toDouble);
+            label.text = subValue[@"text"].toString;
+            label.textColor = [UIColor colorWithRed:subValue[@"color"][@"r"].toDouble green:subValue[@"color"][@"g"].toDouble blue:subValue[@"color"][@"b"].toDouble alpha:subValue[@"color"][@"a"].toDouble];
+            [self.view addSubview:label];
+        }else if ([[subValue objectForKeyedSubscript:@"typeName"].toString isEqualToString:@"Button"]){
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+            button.frame = CGRectMake(subValue[@"rect"][@"x"].toDouble, subValue[@"rect"][@"y"].toDouble, subValue[@"rect"][@"width"].toDouble, subValue[@"rect"][@"height"].toDouble);
+            [button setTitle:subValue[@"text"].toString forState:UIControlStateNormal];
+            button.tag = self.actionArray.count;
+            [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+            [self.actionArray addObject:subValue[@"callFunc"]];
+            [self.view addSubview:button];
+        }
+    }
+}
 
-
+-(void) buttonAction:(UIButton *)btn{
+    JSValue *action = self.actionArray[btn.tag];
+    [action callWithArguments:nil];
+}
 
 @end
