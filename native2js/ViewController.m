@@ -7,8 +7,10 @@
 //
 
 #import "ViewController.h"
-
+#import <JavaScriptCore/JavaScriptCore.h>
 @interface ViewController ()
+
+@property(strong,nonatomic) JSContext *jsContext;
 
 @end
 
@@ -17,7 +19,27 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+
+    self.jsContext = [[JSContext alloc]init];
+//    [self runJS_Hello:@"'avatar'"];
+    
+    int (^block)(NSString *) = ^(NSString *name){
+        NSLog(@"hello javascript");
+        NSLog(@"%@", name);
+        return 99;
+    };
+    [self.jsContext setObject:block forKeyedSubscript:@"oc_hello"];
+    NSLog(@"asdadasd");
 }
+
+//-(void) runJS_Hello:(NSString *)name{
+//    NSString *path =[[NSBundle mainBundle] pathForResource:@"main" ofType:@"js"];
+//    NSData *jsData =[[NSData alloc]initWithContentsOfFile:path];
+//    NSString *jsCode = [[NSString alloc]initWithData:jsData encoding:NSUTF8StringEncoding];
+//    NSString *fiString = [NSString stringWithFormat:jsCode,name];
+//    [self.jsContext evaluateScript:fiString];
+//}
+
 
 
 @end
